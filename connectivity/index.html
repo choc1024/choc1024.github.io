@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/python/python.min.js"></script>
+    <style>
+  #popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+
+  #popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 300px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+
+  #progress-container {
+    width: 100%;
+    background: #eee;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0;
+  }
+
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    transition: width 0.3s ease;
+  }
+</style>
+
+</head>
+
+<body>
+    <p>Write here the code in python to process the input (in binary) before sending:</p>
+    <textarea rows="20" cols="30" id="code_process">
+def process(input: str):
+      return input
+    </textarea>
+    <p>Write here the code in python to process the received input (in binary) to decode:</p>
+    <textarea rows="20" cols="10" id="code_receive">
+def receive(input: str):
+      return input
+    </textarea>
+    <p>Amount of randomization:</p>
+    <div class="slider-container">
+        <span class="slider-label">1%</span>
+        <input type="range" id="noise_slider" min="1" max="99" step="1" value="20">
+        <span class="slider-label">99%</span>
+        <span id="noise_slider_value">20%</span>
+    </div>
+    <p>Length of data</p>
+    <div class="slider-container">
+        <span class="slider-label">1 byte</span>
+        <input type="range" id="data_slider" min="1" max="1000" step="1" value="20">
+        <span class="slider-label">1000 bytes</span>
+        <span id="data_slider_value">20 bytes</span>
+    </div>
+    <script>
+        const noise_slider = document.getElementById("noise_slider");
+        const noise_label = document.getElementById("noise_slider_value");
+        const data_slider = document.getElementById("data_slider");
+        const data_label = document.getElementById("data_slider_value");
+
+        noise_slider.addEventListener("input", function () {
+          noise_label.textContent = noise_slider.value + "%";
+        });
+        data_slider.addEventListener("input", function () {
+          data_label.textContent = data_slider.value + " byte(s)";
+        });
+    </script>
+    <button id="simulate_button" onclick="simulate()">Go!</button>
+    <div id="popup" style="display: none;">
+  <div id="popup-content">
+    <h3>Processing...</h3>
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+    </div>
+  </div>
+</div>
+
+    <script src="index.js"></script>
+</body>
+</html>
