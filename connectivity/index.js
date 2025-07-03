@@ -61,6 +61,7 @@ async function simulate() {
     if (pyodide_load === false) {
       popup_text.textContent = "Loading Pyodide..."
       document.getElementById("popup").style.display = "flex";
+      popup_text.textContent = "Loading Pyodide..."
       await delay(0.24)
       updateProgress(25)
       pyodide = await loadPyodide();
