@@ -57,7 +57,9 @@ function flipBits(str, percentage) {
 }
 
 async function simulate() {
+  let popup_text = document.getElementById("popup_text")
     if (pyodide_load === false) {
+      popup_text.textContent = "Loading Pyodide..."
       document.getElementById("popup").style.display = "flex";
       await delay(0.24)
       updateProgress(25)
@@ -69,6 +71,7 @@ async function simulate() {
       updateProgress(100)
       await delay(500)
       updateProgress(0)
+      popup_text.textContent = "Simulating network noise..."
     } else {
       document.getElementById("popup").style.display = "flex";
     }
