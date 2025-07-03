@@ -106,9 +106,10 @@ async function simulate() {
         await delay(25);
         
     }
-    await delay(750)
-    updateProgress(0)
-    popup.style.display = "none";
-    await delay(50)
+    await delay(800)
+    popup_text.textContent = "Done!"
+    await delay(1000)
     alert("Successful amount of data transfers: " + sucsessful_transfers)
+    popup.style.display = "none";
+    updateProgress(0)
 }
