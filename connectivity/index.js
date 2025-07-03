@@ -58,9 +58,10 @@ function flipBits(str, percentage) {
 
 async function simulate() {
   let popup_text = document.getElementById("popup_text")
+  let popup = document.getElementById("popup")
     if (pyodide_load === false) {
       popup_text.textContent = "Loading Pyodide..."
-      document.getElementById("popup").style.display = "flex";
+      popup.style.display = "flex";
       popup_text.textContent = "Loading Pyodide..."
       await delay(0.24)
       updateProgress(25)
@@ -74,7 +75,8 @@ async function simulate() {
       updateProgress(0)
       popup_text.textContent = "Simulating network noise..."
     } else {
-      document.getElementById("popup").style.display = "flex";
+      popup.style.display = "flex";
+      popup_text.textContent = "Simulating network noise..."
     }
     console.log("Started Simulation")
     let process = process_editor.getValue();
@@ -106,6 +108,6 @@ async function simulate() {
     }
     await delay(500)
     updateProgress(0)
-    document.getElementById("popup").style.display = "none";
+    popup.style.display = "none";
     alert("Successful amount of data transfers: " + sucsessful_transfers)
 }
