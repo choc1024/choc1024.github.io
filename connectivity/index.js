@@ -103,7 +103,7 @@ async function simulate() {
         if (received_data === data) {
           sucsessful_transfers++
         }
-        await delay(25);
+        await delay(10);
         
     }
     await delay(800)
