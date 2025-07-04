@@ -96,9 +96,9 @@ async function simulate() {
       for (let j = 0; j < 10; j++) {
         let score = 0
         for (let k = 0; k < 100; k++){
-          data = data_generator(data_levels_bytes[j])
+          let data = data_generator(data_levels_bytes[j]*4)
           pyodide.globals.set("input_bits", data);
-          const result = pyodide.runPython("process(input_bits)*4");
+          const result = pyodide.runPython("process(input_bits)");
           if (isBinary(result) === false) {
             alert("Process function return value invalid")
             popup.style.display = "none";
