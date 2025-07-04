@@ -56,6 +56,9 @@ function flipBits(str, percentage) {
   return arr.join("");
 }
 
+const noise_levels = [1, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
+const data_levels_bytes = [8, 16, 32, 64, 128, 150, 200, 256, 500, 1024]
+
 async function simulate() {
   let popup_text = document.getElementById("popup_text")
   let popup = document.getElementById("popup")
@@ -83,6 +86,8 @@ async function simulate() {
     let receive = receive_editor.getValue();
     let noise = document.getElementById("noise_slider").value
     let data_length = parseInt(document.getElementById("data_slider").value)
+    let heatmap = document.getElementById('heatmap');
+    heatmap.innerHTML = '';
     await delay(750)
     pyodide.runPython(process)
     pyodide.runPython(receive)
