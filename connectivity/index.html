@@ -45,8 +45,8 @@
 
   #heatmap {
     display: grid;
-    grid-template-columns: repeat(11, 40px);
-    grid-template-rows: repeat(10, 40px);
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(11, 40px);
     gap: 4px;
     margin-top: 20px;
   }
@@ -70,12 +70,12 @@
 <body>
     <p>Write here the code in python to process the input (in binary) before sending:</p>
     <textarea rows="20" cols="30" id="code_process">
-def process(input: str):
+def process(input_bits: str):
       return input
     </textarea>
     <p>Write here the code in python to process the received input (in binary) to decode:</p>
     <textarea rows="20" cols="10" id="code_receive">
-def receive(input: str):
+def receive(input_bits: str):
       return input
     </textarea>
     <p>Amount of randomization:</p>

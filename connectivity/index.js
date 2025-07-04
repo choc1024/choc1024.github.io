@@ -56,7 +56,7 @@ function flipBits(str, percentage) {
   return arr.join("");
 }
 
-const noise_levels = [1, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
+const noise_levels = [0, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
 const data_levels_bytes = [8, 16, 32, 64, 128, 150, 200, 256, 500, 1024]
 
 async function simulate() {
@@ -87,34 +87,43 @@ async function simulate() {
     let noise = document.getElementById("noise_slider").value
     let data_length = parseInt(document.getElementById("data_slider").value)
     let heatmap = document.getElementById('heatmap');
+    let result_list = document.getElementById("results")
     heatmap.innerHTML = '';
-    await delay(750)
     pyodide.runPython(process)
     pyodide.runPython(receive)
     console.log("Starting for loop")
-    let sucsessful_transfers = 0
-    for (let i = 0; i < 100; i++) {
-        updateProgress(i)
-        data = data_generator(data_length);
-        pyodide.globals.set("input", data);
-        const result = pyodide.runPython("process(input)");
-        if (isBinary(result) === false) {
-          alert("Process function return value invalid")
-          return
+    for (let i = 0; i < 11; i++) {
+      for (let j = 0; j < 10; j++) {
+        let score = 0
+        for (let k = 0; k < 100; k++){
+          data = data_generator(data_levels_bytes[j])
+          pyodide.globals.set("input_bits", data);
+          const result = pyodide.runPython("process(input_bits)*4");
+          if (isBinary(result) === false) {
+            alert("Process function return value invalid")
+            popup.style.display = "none";
+            return
+          }
+          let flipped = flipBits(result, noise_levels[i])
+          pyodide.globals.set("input_bits", flipped)
+          let received_data = pyodide.runPython("receive(input_bits)")
+          if (received_data === data) {
+            score++
+          }
         }
-        let flipped = flipBits(result, noise)
-        pyodide.globals.set("input", flipped)
-        let received_data = pyodide.runPython("receive(input)")
-        if (received_data === data) {
-          sucsessful_transfers++
-        }
-        await delay(10);
-        
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.textContent = score + '%';
+        const hue = score * 1.2;
+        cell.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+        heatmap.appendChild(cell);
+      }
     }
     await delay(800)
     popup_text.textContent = "Done!"
     await delay(1000)
-    alert("Successful amount of data transfers: " + sucsessful_transfers)
+    result_list.style.display = "flex"
+    await delay(100000)
     popup.style.display = "none";
     updateProgress(0)
 }
