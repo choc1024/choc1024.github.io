@@ -27,6 +27,9 @@ let pyodide_load = false
 let pyodide = null
 
 function updateProgress(value) {
+  if (value > 100) {
+    value = 100
+  }
   const bar = document.getElementById("progress-bar");
   console.log(value + "%")
   bar.style.width = value + "%";
@@ -59,6 +62,8 @@ function flipBits(str, percentage) {
 const noise_levels = [0, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
 const data_levels_bytes = [8, 16, 32, 64, 128, 150, 200, 256, 500, 1024]
 
+let progress_count = 0
+
 async function simulate() {
   let popup_text = document.getElementById("popup_text")
   let popup = document.getElementById("popup")
@@ -88,6 +93,7 @@ async function simulate() {
     let data_length = parseInt(document.getElementById("data_slider").value)
     let heatmap = document.getElementById('heatmap');
     let result_list = document.getElementById("results")
+    progress_count = 0
     heatmap.innerHTML = '';
     pyodide.runPython(process)
     pyodide.runPython(receive)
@@ -96,6 +102,8 @@ async function simulate() {
       for (let j = 0; j < 10; j++) {
         let score = 0
         for (let k = 0; k < 100; k++){
+          progress_count++
+          updateProgress(progress_count)
           let data = data_generator(data_levels_bytes[j]*4)
           pyodide.globals.set("input_bits", data);
           const result = pyodide.runPython("process(input_bits)");
@@ -119,11 +127,7 @@ async function simulate() {
         heatmap.appendChild(cell);
       }
     }
-    await delay(800)
     popup_text.textContent = "Done!"
-    await delay(1000)
     result_list.style.display = "flex"
-    await delay(100000)
-    popup.style.display = "none";
     updateProgress(0)
 }
