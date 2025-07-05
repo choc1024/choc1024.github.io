@@ -78,19 +78,6 @@ def process(input_bits: str):
 def receive(input_bits: str):
       return input_bits
     </textarea>
-    <script>
-        const noise_slider = document.getElementById("noise_slider");
-        const noise_label = document.getElementById("noise_slider_value");
-        const data_slider = document.getElementById("data_slider");
-        const data_label = document.getElementById("data_slider_value");
-
-        noise_slider.addEventListener("input", function () {
-          noise_label.textContent = noise_slider.value + "%";
-        });
-        data_slider.addEventListener("input", function () {
-          data_label.textContent = data_slider.value + " byte(s)";
-        });
-    </script>
     <button id="simulate_button" onclick="simulate()">Go!</button>
     <div id="popup" style="display: none;">
   <div id="popup-content">
