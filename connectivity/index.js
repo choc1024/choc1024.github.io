@@ -80,10 +80,10 @@ async function simulate() {
       await delay(500)
       updateProgress(0)
       popup_text.textContent = "Simulating network noise..."
-    } else {
-      popup.style.display = "flex";
-      popup_text.textContent = "Simulating network noise..."
     }
+    await delay(1000) // debugging delay
+    popup.style.display = "flex";
+    popup_text.textContent = "Simulating network noise..."
     let process = process_editor.getValue();
     let receive = receive_editor.getValue();
     let heatmap = document.getElementById('heatmap');
