@@ -78,20 +78,6 @@ def process(input_bits: str):
 def receive(input_bits: str):
       return input_bits
     </textarea>
-    <p>Amount of randomization:</p>
-    <div class="slider-container">
-        <span class="slider-label">1%</span>
-        <input type="range" id="noise_slider" min="1" max="99" step="1" value="20">
-        <span class="slider-label">99%</span>
-        <span id="noise_slider_value">20%</span>
-    </div>
-    <p>Length of data</p>
-    <div class="slider-container">
-        <span class="slider-label">1 byte</span>
-        <input type="range" id="data_slider" min="1" max="1000" step="1" value="20">
-        <span class="slider-label">1000 bytes</span>
-        <span id="data_slider_value">20 bytes</span>
-    </div>
     <script>
         const noise_slider = document.getElementById("noise_slider");
         const noise_label = document.getElementById("noise_slider_value");
