@@ -62,8 +62,6 @@ function flipBits(str, percentage) {
 const noise_levels = [0, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
 const data_levels_bytes = [8, 16, 32, 64, 128, 150, 200, 256, 500, 1024]
 
-let progress_count = 0
-
 async function simulate() {
   let popup_text = document.getElementById("popup_text")
   let popup = document.getElementById("popup")
@@ -86,24 +84,20 @@ async function simulate() {
       popup.style.display = "flex";
       popup_text.textContent = "Simulating network noise..."
     }
-    console.log("Started Simulation")
     let process = process_editor.getValue();
     let receive = receive_editor.getValue();
-    let noise = document.getElementById("noise_slider").value
-    let data_length = parseInt(document.getElementById("data_slider").value)
     let heatmap = document.getElementById('heatmap');
     let result_list = document.getElementById("results")
-    progress_count = 0
     heatmap.innerHTML = '';
     pyodide.runPython(process)
     pyodide.runPython(receive)
-    console.log("Starting for loop")
+    let progress_count = 0
     for (let i = 0; i < 11; i++) {
       for (let j = 0; j < 10; j++) {
         let score = 0
+        progress_count++
+        updateProgress(progress_count)
         for (let k = 0; k < 100; k++){
-          progress_count++
-          updateProgress(progress_count)
           let data = data_generator(data_levels_bytes[j]*4)
           pyodide.globals.set("input_bits", data);
           const result = pyodide.runPython("process(input_bits)");
