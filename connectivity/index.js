@@ -58,7 +58,7 @@ function flipBits(str, percentage) {
   return arr.join("");
 }
 
-const noise_levels = [0, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
+const noise_levels = [1, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
 const data_levels_bytes = [8, 16, 32, 64, 128, 150, 200, 256, 500, 1024]
 
 async function simulate() {
