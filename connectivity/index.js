@@ -81,7 +81,7 @@ async function simulate() {
       updateProgress(0)
       popup_text.textContent = "Simulating network noise..."
     }
-    await delay(1000) // debugging delay
+    await delay(500) // debugging delay
     popup.style.display = "flex";
     popup_text.textContent = "Simulating network noise..."
     let process = process_editor.getValue();
@@ -92,11 +92,12 @@ async function simulate() {
     pyodide.runPython(process)
     pyodide.runPython(receive)
     let progress_count = 0
-    for (let i = 0; i < 11; i++) {
+    for (let i = 11; i > 0; i--) {
       for (let j = 0; j < 10; j++) {
         let score = 0
         progress_count++
         updateProgress(progress_count)
+        await delay(10)
         for (let k = 0; k < 100; k++){
           let data = data_generator(data_levels_bytes[j]*4)
           pyodide.globals.set("input_bits", data);
