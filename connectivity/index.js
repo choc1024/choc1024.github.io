@@ -65,6 +65,7 @@ const data_levels_bytes = [8, 16, 32, 64, 128, 150, 200, 256, 500, 1024]
 async function simulate() {
   let popup_text = document.getElementById("popup_text")
   let popup = document.getElementById("popup")
+  updateProgress(0)
     if (pyodide_load === false) {
       popup_text.textContent = "Loading Pyodide..."
       popup.style.display = "flex";
@@ -75,7 +76,7 @@ async function simulate() {
       console.log("pyodide loded")
       updateProgress(75)
       pyodide_load = true
-      await delay(1000) // delay a bit to improve user experience :)
+      await delay(500) // delay a bit to improve user experience :)
       updateProgress(100)
       await delay(500)
       updateProgress(0)
@@ -97,13 +98,13 @@ async function simulate() {
         let score = 0
         progress_count++
         updateProgress(progress_count)
-        await delay(10)
+        await delay(5)
         for (let k = 0; k < 100; k++){
-          let data = data_generator(data_levels_bytes[j]*4)
+          let data = data_generator(data_levels_bytes[j]*4) // *4 because 4 bits per byte
           pyodide.globals.set("input_bits", data);
           const result = pyodide.runPython("process(input_bits)");
           if (isBinary(result) === false) {
-            alert("Process function return value invalid")
+            alert("ERROR: Process function return value invalid")
             popup.style.display = "none";
             return
           }
@@ -123,6 +124,6 @@ async function simulate() {
       }
     }
     popup_text.textContent = "Done!"
+    updateProgress(100)
     result_list.style.display = "flex"
-    updateProgress(0)
 }
