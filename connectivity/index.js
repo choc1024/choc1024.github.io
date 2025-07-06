@@ -31,7 +31,6 @@ function updateProgress(value) {
     value = 100
   }
   const bar = document.getElementById("progress-bar");
-  console.log(value + "%")
   bar.style.width = value + "%";
 }
 
@@ -69,11 +68,9 @@ async function simulate() {
     if (pyodide_load === false) {
       popup_text.textContent = "Loading Pyodide..."
       popup.style.display = "flex";
-      popup_text.textContent = "Loading Pyodide..."
       await delay(0.24)
       updateProgress(25)
       pyodide = await loadPyodide();
-      console.log("pyodide loded")
       updateProgress(75)
       pyodide_load = true
       await delay(500) // delay a bit to improve user experience :)
@@ -99,6 +96,8 @@ async function simulate() {
         progress_count++
         updateProgress(progress_count)
         await delay(5)
+        console.log('Noise level: ' + i)
+        console.log('Data length: ' + j)
         for (let k = 0; k < 100; k++){
           let data = data_generator(data_levels_bytes[j]*4) // *4 because 4 bits per byte
           pyodide.globals.set("input_bits", data);
