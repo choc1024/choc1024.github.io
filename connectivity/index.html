@@ -70,13 +70,17 @@
 <body>
     <p>Write here the code in python to process the input (in binary) before sending:</p>
     <textarea rows="20" cols="30" id="code_process">
-def process(input_bits: str):
-      return input_bits
+def process(input_bits):
+	  # 7x repetition encoding
+    return ''.join(bit * 7 for bit in input_bits)
     </textarea>
     <p>Write here the code in python to process the received input (in binary) to decode:</p>
     <textarea rows="20" cols="10" id="code_receive">
-def receive(input_bits: str):
-      return input_bits
+def receive(input_bits):
+	  # 7x repetition decoding with majority vote for error correction
+    return ''.join('1' if chunk.count('1') > 3 else '0'
+                   for i in range(0, len(input_bits), 7)
+                   for chunk in [input_bits[i:i+7]])
     </textarea>
     <button id="simulate_button" onclick="simulate()">Go!</button>
     <div id="popup" style="display: none;">
