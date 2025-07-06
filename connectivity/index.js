@@ -90,14 +90,23 @@ async function simulate() {
     pyodide.runPython(process)
     pyodide.runPython(receive)
     let progress_count = 0
-    for (let i = 11; i > 0; i--) {
+    for (let i = 10; i > -1; i--) {
+      const row_label = document.createElement('div');
+      row_label.className = 'cell';
+      row_label.textContent = noise_levels[i] + '%';
+      const gray = Math.round(255 - (i * 25.5));
+      row_label.style.backgroundColor = `rgb(${gray}, ${gray}, ${gray})`;
+      if (i < 5) {
+        row_label.style.color = 'black';
+      } else {
+        row_label.style.color = 'white';
+      }
+      heatmap.appendChild(row_label);
       for (let j = 0; j < 10; j++) {
         let score = 0
         progress_count++
         updateProgress(progress_count)
         await delay(5)
-        console.log('Noise level: ' + i)
-        console.log('Data length: ' + j)
         for (let k = 0; k < 100; k++){
           let data = data_generator(data_levels_bytes[j]*4) // *4 because 4 bits per byte
           pyodide.globals.set("input_bits", data);
@@ -118,9 +127,33 @@ async function simulate() {
         cell.className = 'cell';
         cell.textContent = score + '%';
         const hue = score * 1.2;
+        if (hue > 50) {
+          cell.style.color = 'black';
+        } else {
+          cell.style.color = 'white';
+        }
         cell.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
         heatmap.appendChild(cell);
       }
+    }
+    let col_label = document.createElement('div');
+    col_label.className = 'cell';
+    col_label.style.backgroundColor = 'transparent';
+    col_label.style.color = 'black';
+    heatmap.appendChild(col_label);
+    // Add column labels for data levels
+    for (let i = 0; i < 10; i++) {
+      const col_label = document.createElement('div');
+      col_label.className = 'cell';
+      col_label.textContent = data_levels_bytes[i] + ' bytes';
+      const gray = Math.round(255 - (i * 25.5));
+      if (i < 5) {
+        col_label.style.color = 'black';
+      } else {
+        col_label.style.color = 'white';
+      }
+      col_label.style.backgroundColor = `rgb(${gray}, ${gray}, ${gray})`;
+      heatmap.appendChild(col_label);
     }
     popup_text.textContent = "Done!"
     updateProgress(100)
