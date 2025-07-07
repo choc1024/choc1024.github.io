@@ -62,6 +62,9 @@ const noise_levels = [1, 10, 25, 30, 40, 50, 60, 70, 80, 90, 99]
 const data_levels_bytes = [8, 16, 32, 64, 128, 150, 200, 256, 500, 1024]
 
 async function simulate() {
+  let progress_text = document.getElementById("progress_text")
+  progress_text.textContent = "0/11000 tests done"
+  let progress_text_update = 0
   let popup_text = document.getElementById("popup_text")
   let popup = document.getElementById("popup")
   updateProgress(0)
@@ -108,6 +111,8 @@ async function simulate() {
         updateProgress(progress_count)
         await delay(5)
         for (let k = 0; k < 100; k++){
+          progress_text_update++
+          progress_text.textContent = `${progress_text_update}/11000 tests done`
           let data = data_generator(data_levels_bytes[j]*4) // *4 because 4 bits per byte
           pyodide.globals.set("input_bits", data);
           const result = pyodide.runPython("process(input_bits)");
